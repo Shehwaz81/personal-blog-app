@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+    {% block content %}
+	
+	<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+        <div class="border border-primary border-4 p-3 w-75 mx-auto mt-3">
+            <h1 class="text-center mt-1">Create a new article in markdown!</h1>
+        </div>
+
+	<div class="d-flex w-100 gap-4 mt-4 px-3">
+    
+	    <form action="/create" method="POST" class="w-50 d-flex flex-column">
+			<label for="user-text" class="form-label fw-bold text-secondary mb-2">Article Title</label>
+			<input id="article-title" type="text" name="title">
+
+			<label for="user-text" class="form-label fw-bold text-secondary mb-2 mt-3">Markdown Input</label>
+			<textarea id="user-text" name="article" class="form-control textarea-h flex-grow-1 shadow-sm" placeholder="Type your markdown here..." oninput="convert_markdown()"></textarea>
+			
+			<button type="submit" class="btn btn-primary mt-3 align-self-end px-4">Submit Article</button>
+
+	    </form>
+
+	    <div class="w-50 d-flex flex-column">
+			<label class="form-label fw-bold text-secondary mb-2">Live Preview</label>
+			<div id="markdown-render" class="border rounded bg-light p-4 shadow-sm overflow-auto text-break markdown-h"></div>
+	    </div>
+	</div>
+
+	<hr class="m-3">
+
+	<script>
+		function convert_markdown() {
+			const content = document.getElementById("user-text").value;
+			const html_output = marked.parse(content);
+			
+			document.getElementById("markdown-render").innerHTML = html_output;
+		}
+	</script>
+
+    {% endblock %}

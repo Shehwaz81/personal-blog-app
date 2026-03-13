@@ -1,28 +1,34 @@
-<!DOCTYPE html>
-
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>ShehwazNet</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-        <link rel="stylesheet" href="../static/index.css">
-    </head>
-
-    <body>
-        <h1>Welcome to <span style="color:blueviolet">ShehwazNet!</span></h1>
-        <p class="title-heading">A network of all my experiences</p>
-        <hr>
-
-        <!--make the article card/button with a title, pic, and more-->
-        <div class="card article-card rounded">
-            <img src="../static/image.png" class="card-img-left">
-            <div class="card-body">
-                <h5 class="card-title article-title">Article title</h5>
-                <p class="card-text">Some skibidi content here for the article display stuff and stuff all over. That is the most ever you will ever meet in the one and only</p>
-            </div>
+{% extends 'base.html' %}
+    {% block content %}
+        <!--make the article table with a title, pic, and more-->
+        <div class="table-border">
+            <table class="table table-light table-striped-columns article-table">
+                <thead class="text-center">
+                    <th scope="col">#</th>
+                    <th scope="col">Article Name</th>
+                    <th scope="col">Date</th>
+                    <th scope="col" >Action(s)</th>
+                </thead>
+                <tbody class="text-center">
+                    <!--Here, we will use jinja2 to add all the articles by fetching data from database-->
+                    {% for article in articles %}
+                        <tr>
+                            <th scope="row">{{article.id}}</th>
+                            <td>{{ article.article_title }}</td>
+                            <td>{{article.created_at}}</td>
+                            <td>
+                                <button id={{article.id}}>View Article</button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
+        <form action="/create" method="GET">
+            <button type="submit" class="btn btn-primary d-block mx-auto mt-3">Create new article</button>
+        </form>
 
-    </body>
-
-</html>
+        <script>
+            let content = document.getElementById()
+        </script>
+    {% endblock %}
