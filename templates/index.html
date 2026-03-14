@@ -17,7 +17,9 @@
                             <td>{{ article.article_title }}</td>
                             <td>{{article.created_at}}</td>
                             <td>
-                                <button id={{article.id}}>View Article</button>
+                                <form action="/view" method="GET">
+                                    <button type="submit" name="id" id={{article.id}} value={{article.id}}>View Article</button>
+                                </form>
                             </td>
                         </tr>
                     {% endfor %}

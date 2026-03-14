@@ -42,8 +42,14 @@ def create():
         db.session.commit()
         return redirect(url_for('main'))
 
+    return "record not found", 400
+
 @app.route("/view")
 def view():
-    return render_template('visit.html')
+    id = request.args.get('id')
+    requested_article = db.get_or_404(Article, id) # this is the article object, not the raw data
+    raw_text = requested_article.article # index into the raw text of the article
+
+    return render_template('view.html', raw_text=raw_text)
 
     
