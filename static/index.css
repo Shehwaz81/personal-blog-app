@@ -1,3 +1,65 @@
+body {
+    background-color: #f8f9fa;
+    color: #212529;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+#markdown-display {
+    margin: 1.5rem auto;
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 1rem;
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+#markdown-display h1,
+#markdown-display h2,
+#markdown-display h3,
+#markdown-display h4,
+#markdown-display h5 {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+#markdown-display p {
+    line-height: 1.75;
+    margin-bottom: 1rem;
+}
+
+#markdown-display img {
+    max-width: 100%;
+    display: block;
+    margin: 1rem auto;
+    border-radius: 0.75rem;
+}
+
+#markdown-display pre {
+    background: #0d1117;
+    color: #c9d1d9;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    overflow: auto;
+    margin: 1.25rem 0;
+}
+
+#markdown-display code {
+    background: rgba(27, 31, 35, 0.08);
+    padding: 0.2rem 0.35rem;
+    border-radius: 0.35rem;
+    font-size: 0.95em;
+}
+
+#markdown-display blockquote {
+    border-left: 0.25rem solid #6c757d;
+    background: rgba(108, 117, 125, 0.1);
+    padding: 0.75rem 1rem;
+    margin: 1.25rem 0;
+    color: #495057;
+}
+
 .article-table {
     margin-left: auto;
     margin-right: auto;
@@ -19,6 +81,7 @@
 }
 
 .markdown-h {
+    min-width: 100%;
     max-height: 100vh;
     min-height: 50vh;
 }

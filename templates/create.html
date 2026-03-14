@@ -23,7 +23,7 @@
 
 	    <div class="w-50 d-flex flex-column">
 			<label class="form-label fw-bold text-secondary mb-2">Live Preview</label>
-			<div id="markdown-render" class="border rounded bg-light p-4 shadow-sm overflow-auto text-break markdown-h"></div>
+			<div id="markdown-display" class="border rounded bg-light p-4 shadow-sm overflow-auto text-break markdown-h"></div>
 	    </div>
 	</div>
 
@@ -34,7 +34,7 @@
 			const content = document.getElementById("user-text").value;
 			const html_output = marked.parse(content);
 			
-			document.getElementById("markdown-render").innerHTML = html_output;
+			document.getElementById("markdown-display").innerHTML = html_output;
 		}
 	</script>
 
