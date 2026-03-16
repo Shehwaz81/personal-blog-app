@@ -1,12 +1,18 @@
 import os
+from werkzeug.security import check_password_hash
+from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, render_template, request, redirect, url_for
-
+from flask import Flask, render_template, request, redirect, url_for, session
 from sqlalchemy.sql import func
 
 app = Flask(__name__)
+load_dotenv()
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+
+# app config
+app.secret_key = os.getenv("SECRET_KEY") 
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
 app.config['SQLALCHEMY_TACK_MODIFICATIONS'] = False # disable for less memory use
 
@@ -23,6 +29,15 @@ class Article(db.Model):
     def __repr__(self):
         return f'<Article: {self.article_title}>'
 
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    username = db.Column(db.String(25))
+    hash_key = db.Column(db.Text)
+
+    def __repr__(self):
+        return f'<username: {self.username}>'
+
 @app.route("/")
 def main():
     articles = Article.query.order_by(Article.id.desc()).all()
@@ -31,6 +46,9 @@ def main():
 
 @app.route("/create", methods=["GET", "POST"])
 def create():
+    if session["logged_in"] != True or session["username"] == None:
+        return "<h1>this is for admins only</h1>", 400
+
     if request.method == "GET": # just load the create page
         return render_template('create.html')
     
@@ -52,4 +70,19 @@ def view():
 
     return render_template('view.html', raw_text=raw_text)
 
-    
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username=request.form.get("username")
+        password=request.form.get("password")
+        
+        user = db.one_or_404(db.select(User).filter_by(username=username))
+        
+        if user and check_password_hash(user.hash_key, password):
+            session["logged_in"] = True
+            session["username"] = username
+            return "<h1>Successfully Logged In!</h1>"
+        else:
+            return "<h1>Invalid username or password</h1>"
+
+    return render_template('login.html')

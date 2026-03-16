@@ -1,0 +1,14 @@
+# Secrets and local environment config
+.env
+.env.*
+
+# Python virtual environment and bytecode
+venv/
+__pycache__/
+*.py[cod]
+
+# Local application database
+database.db
+
+# Installed Node packages
+node_modules/
