@@ -14,7 +14,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 app.secret_key = os.getenv("SECRET_KEY") 
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
-app.config['SQLALCHEMY_TACK_MODIFICATIONS'] = False # disable for less memory use
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # disable for less memory use
 
 db = SQLAlchemy(app)
 
@@ -37,6 +37,12 @@ class User(db.Model):
 
     def __repr__(self):
         return f'<username: {self.username}>'
+
+
+
+with app.app_context(): # without this, it wouldn't know where to look to create the database!
+    db.create_all()
+
 
 @app.route("/")
 def main():
