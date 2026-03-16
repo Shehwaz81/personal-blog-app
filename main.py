@@ -41,12 +41,14 @@ class User(db.Model):
 @app.route("/")
 def main():
     articles = Article.query.order_by(Article.id.desc()).all()
-    return render_template('index.html', articles=articles)
+    return render_template('index.html', articles=articles, admin=session.get("logged_in"))
 
 
 @app.route("/create", methods=["GET", "POST"])
 def create():
-    if session["logged_in"] != True or session["username"] == None:
+    # .get() returns none if no key is found, else it returns the value of the key. 
+    # Therefore, we don't have to worry about the logged_in being flask or username being empty 
+    if not session.get("logged_in") or not session.get("username"): 
         return "<h1>this is for admins only</h1>", 400
 
     if request.method == "GET": # just load the create page

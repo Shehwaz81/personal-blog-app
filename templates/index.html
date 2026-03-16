@@ -1,36 +1,50 @@
 {% extends 'base.html' %}
     {% block content %}
-        <!--make the article table with a title, pic, and more-->
-        <div class="table-border">
-            <table class="table table-light table-striped-columns article-table">
-                <thead class="text-center">
-                    <th scope="col">#</th>
-                    <th scope="col">Article Name</th>
-                    <th scope="col">Date</th>
-                    <th scope="col" >Action(s)</th>
-                </thead>
-                <tbody class="text-center">
-                    <!--Here, we will use jinja2 to add all the articles by fetching data from database-->
-                    {% for article in articles %}
-                        <tr>
-                            <th scope="row">{{article.id}}</th>
-                            <td>{{ article.article_title }}</td>
-                            <td>{{article.created_at}}</td>
-                            <td>
-                                <form action="/view" method="GET">
-                                    <button type="submit" name="id" id={{article.id}} value={{article.id}}>View Article</button>
-                                </form>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <form action="/create" method="GET">
-            <button type="submit" class="btn btn-primary d-block mx-auto mt-3">Create new article</button>
-        </form>
+        <section class="article-feed">
+            {% if articles %}
+                {% set article_dates = namespace(current='') %}
+                {% for article in articles %}
+                    {% set date_label = article.created_at.strftime('%B %d, %Y') %}
+                    {% if date_label != article_dates.current %}
+                        {% set article_dates.current = date_label %}
+                        <div class="article-date-group">
+                            <div class="article-date-heading">
+                                <span>{{ date_label }}</span>
+                            </div>
+                    {% endif %}
 
-        <script>
-            let content = document.getElementById()
-        </script>
+                            <article class="article-card">
+                                <div class="article-copy">
+                                    <p class="article-kicker">{{ article.created_at.strftime('%A') }}</p>
+                                    <h2 class="article-title">{{ article.article_title }}</h2>
+                                </div>
+                                <form action="/view" method="GET">
+                                    <button
+                                        class="article-view-button"
+                                        type="submit"
+                                        name="id"
+                                        id="{{ article.id }}"
+                                        value="{{ article.id }}">
+                                        View
+                                    </button>
+                                </form>
+                            </article>
+
+                    {% set next_date = articles[loop.index].created_at.strftime('%B %d, %Y') if not loop.last else '' %}
+                    {% if loop.last or next_date != article_dates.current %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <div class="article-empty-state">
+                    <p>No articles yet.</p>
+                </div>
+            {% endif %}
+        </section>
+
+	{% if admin %}
+		<form action="/create" method="GET">
+		    <button type="submit" class="btn btn-primary d-block mx-auto mt-4">Create new article</button>
+		</form>
+	{% endif %}
     {% endblock %}
