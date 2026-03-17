@@ -1,5 +1,5 @@
 import os
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, render_template, request, redirect, url_for, session
@@ -13,7 +13,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 # app config
 app.secret_key = os.getenv("SECRET_KEY") 
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # disable for less memory use
 
 db = SQLAlchemy(app)
@@ -81,6 +81,8 @@ def create():
 
     return "record not found", 400
 
+
+
 @app.route("/view")
 def view():
     id = request.args.get('id')
@@ -88,6 +90,8 @@ def view():
     raw_text = requested_article.article # index into the raw text of the article
 
     return render_template('view.html', raw_text=raw_text)
+
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
