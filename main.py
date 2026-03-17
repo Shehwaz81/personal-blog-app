@@ -43,6 +43,17 @@ class User(db.Model):
 with app.app_context(): # without this, it wouldn't know where to look to create the database!
     db.create_all()
 
+    # if there is no data in database, then create 1 new user (me!)
+    # db.session.execute(db.select(User)).first() returns None if the table is empty
+    if not db.session.execute(db.select(User)).first():
+        password = generate_password_hash(os.getenv("PASSWORD"))
+        username = os.getenv("USERNAME")
+
+        admin_data = User(hash_key=password, username=username)
+
+        db.session.add(admin_data)
+        db.session.commit()
+
 
 @app.route("/")
 def main():
