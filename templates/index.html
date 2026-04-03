@@ -18,16 +18,30 @@
                                     <p class="article-kicker">{{ article.created_at.strftime('%A') }}</p>
                                     <h2 class="article-title">{{ article.article_title }}</h2>
                                 </div>
-                                <form action="/view" method="GET">
-                                    <button
-                                        class="article-view-button"
-                                        type="submit"
-                                        name="id"
-                                        id="{{ article.id }}"
-                                        value="{{ article.id }}">
-                                        View
-                                    </button>
-                                </form>
+                                <div class="article-actions">
+                                    <form action="/view" method="GET" class="article-action-form">
+                                        <button
+                                            class="article-view-button"
+                                            type="submit"
+                                            name="id"
+                                            id="{{ article.id }}"
+                                            value="{{ article.id }}">
+                                            View
+                                        </button>
+                                    </form>
+                                    {% if admin %}
+                                    <form action="/delete" method="POST" class="article-action-form">
+                                        <button
+                                            class="article-delete-button"
+                                            type="submit"
+                                            name="article_id"
+                                            id="{{ article.id }}"
+                                            value="{{ article.id }}">
+                                            Delete
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                </div>
                             </article>
 
                     {% set next_date = articles[loop.index].created_at.strftime('%B %d, %Y') if not loop.last else '' %}
@@ -42,9 +56,9 @@
             {% endif %}
         </section>
 
-	{% if admin %}
-		<form action="/create" method="GET">
-		    <button type="submit" class="btn btn-primary d-block mx-auto mt-4">Create new article</button>
-		</form>
-	{% endif %}
+        {% if admin %}
+            <form action="/create" method="GET" class="article-create-form">
+                <button type="submit" class="article-create-button">Create new article</button>
+            </form>
+        {% endif %}
     {% endblock %}

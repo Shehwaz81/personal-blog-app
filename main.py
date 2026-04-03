@@ -84,6 +84,23 @@ def create():
 
 
 
+
+@app.route("/delete", methods=["POST"])
+def delete():
+    if not request.form.get("article_id"):
+        return "<h1>Must be a valid article number</h1>"
+        
+    if session.get("logged_in") and request.method == "POST":
+        id = request.form.get("article_id")
+        db.session.execute(db.delete(Article).where(Article.id == id))
+        db.session.commit()
+        return redirect(url_for("main"))
+
+    return "<h1>Must be a valid article number</h1>"
+
+
+
+
 @app.route("/view")
 def view():
     id = request.args.get('id')
